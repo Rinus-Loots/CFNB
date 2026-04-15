@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>24HoH 2026 - CFNB Workouts</title>
+<style>
+*{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;-webkit-text-size-adjust:100%;}
+:root{--gold:#F5A623;--gold-dim:#B8791A;--gold-glow:rgba(245,166,35,0.15);--dark:#0D0D0D;--card:#1C1C1C;--border:rgba(255,255,255,0.08);--text:#E8E4DC;--muted:#7A7570;--cyan:#2EBFA5;}
+body{background:var(--dark);color:var(--text);font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;min-height:100vh;overflow-x:hidden;padding-bottom:40px;}
+.topnav{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;padding:12px 16px;background:#111;border-bottom:1px solid var(--border);}
+.topnav-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.topnav-link{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:6px 12px;border:1px solid rgba(245,166,35,0.3);border-radius:4px;-webkit-tap-highlight-color:transparent;}
+.hero{position:relative;padding:40px 20px 32px;text-align:center;background:#0a0a0a;border-bottom:1px solid var(--border);}
+.hero-eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;}
+.hero-title{font-size:clamp(48px,14vw,88px);font-weight:900;line-height:0.88;color:var(--text);letter-spacing:-1px;text-transform:uppercase;}
+.hero-title span{color:var(--gold);}
+.hero-sub{margin-top:12px;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.hero-date{display:inline-block;margin-top:14px;background:var(--gold-glow);border:1px solid var(--gold-dim);border-radius:4px;padding:5px 14px;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
+.wod-list{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-flex-direction:column;flex-direction:column;gap:10px;padding:20px 16px 40px;max-width:680px;margin:0 auto;}
+.wod-item{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.wod-item.partner{border-left:3px solid #7B5EA7;}
+.wod-item.team{border-left:3px solid var(--cyan);}
+.wod-item.final{border-left:3px solid var(--gold);}
+.wod-trigger{width:100%;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:10px;padding:14px 16px;background:none;border:none;color:var(--text);cursor:pointer;text-align:left;min-height:64px;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;}
+.wod-num-badge{font-size:11px;font-weight:700;min-width:30px;text-align:center;padding:4px 6px;border-radius:4px;background:var(--gold-glow);color:var(--gold);border:1px solid rgba(245,166,35,0.2);-webkit-flex-shrink:0;flex-shrink:0;}
+.wod-time-badge{font-size:17px;font-weight:900;color:var(--text);min-width:46px;-webkit-flex-shrink:0;flex-shrink:0;}
+.wod-info{-webkit-flex:1 1 auto;flex:1 1 auto;min-width:0;}
+.wod-title-line{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wod-sub-line{font-size:11px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.wod-right{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:5px;-webkit-flex-shrink:0;flex-shrink:0;}
+.wod-cap-badge{font-size:10px;font-weight:600;padding:3px 7px;border-radius:20px;background:rgba(46,191,165,0.1);color:var(--cyan);border:1px solid rgba(46,191,165,0.2);white-space:nowrap;}
+.wod-member-tag{font-size:10px;font-weight:600;padding:3px 7px;border-radius:20px;background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border);white-space:nowrap;}
+.wod-type-tag{font-size:10px;font-weight:600;padding:3px 7px;border-radius:20px;white-space:nowrap;}
+.wod-type-tag.partner{background:rgba(123,94,167,0.15);color:#B59FD8;border:1px solid rgba(123,94,167,0.3);}
+.wod-type-tag.team{background:rgba(46,191,165,0.1);color:var(--cyan);border:1px solid rgba(46,191,165,0.25);}
+.wod-type-tag.final{background:var(--gold-glow);color:var(--gold);border:1px solid rgba(245,166,35,0.3);}
+.wod-chevron{font-size:9px;color:var(--muted);display:inline-block;-webkit-transition:-webkit-transform 0.25s;transition:transform 0.25s;}
+.wod-detail{display:none;}
+.wod-detail-inner{padding:0 16px 18px;border-top:1px solid var(--border);}
+.detail-section{margin-top:14px;}
+.detail-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.detail-scheme{font-size:18px;font-weight:900;color:var(--gold);line-height:1.2;text-transform:uppercase;}
+.movement-list{list-style:none;margin-top:8px;}
+.movement-list li{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:start;-webkit-align-items:flex-start;align-items:flex-start;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:14px;line-height:1.45;color:var(--text);}
+.movement-list li:last-child{border-bottom:none;}
+.movement-list li::before{content:"--";color:var(--gold-dim);-webkit-flex-shrink:0;flex-shrink:0;margin-top:1px;}
+.detail-grid{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.detail-chip{-webkit-flex:1 1 140px;flex:1 1 140px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;padding:8px 10px;font-size:12px;color:var(--muted);line-height:1.5;}
+.detail-chip.full{-webkit-flex-basis:100%;flex-basis:100%;}
+.detail-chip strong{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:3px;font-weight:700;}
+.detail-chip span{color:var(--text);font-size:13px;}
+.detail-note{margin-top:10px;padding:8px 10px;background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.15);border-radius:6px;font-size:12px;color:var(--gold-dim);line-height:1.5;}
+.legend{display:-webkit-box;display:-webkit-flex;display:flex;gap:16px;-webkit-flex-wrap:wrap;flex-wrap:wrap;padding:14px 16px;border-top:1px solid var(--border);-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;max-width:680px;margin:0 auto;}
+.legend-item{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
+.legend-dot{width:10px;height:10px;border-radius:2px;-webkit-flex-shrink:0;flex-shrink:0;}
+.footer{text-align:center;padding:20px;font-size:11px;color:var(--muted);letter-spacing:1px;border-top:1px solid var(--border);}
+@media(max-width:480px){.wod-cap-badge,.wod-type-tag,.wod-member-tag{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <span class="topnav-title">CFNB 2026</span>
+  <a class="topnav-link" href="guide.html">Survival Guide &rarr;</a>
+</div>
+
+<header class="hero">
+  <div class="hero-eyebrow">CFNB &middot; Australia 2026</div>
+  <div class="hero-title">24 HOURS<br>OF <span>HEROES</span></div>
+  <div class="hero-sub">All Workouts &middot; Schedule</div>
+  <div class="hero-date">April 18-19, 2026</div>
+</header>
+
+<div class="wod-list">
+<div class="wod-item " id="w1">
+<button class="wod-trigger" onclick="toggleWod(1)">
+  <span class="wod-num-badge">#1</span>
+  <span class="wod-time-badge">0800</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Turns</div>
+    <div class="wod-sub-line">In honour of Ian Turns</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 1</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev1">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det1">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">5 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>15 Push Press 50/35kg (115/85#)</li><li>21 Front Squat</li><li>400m Run</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Barbell, run</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Push press & front squat: decrease load | Run: 1000/850m bike erg</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w2">
+<button class="wod-trigger" onclick="toggleWod(2)">
+  <span class="wod-num-badge">#2</span>
+  <span class="wod-time-badge">0900</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Gav</div>
+    <div class="wod-sub-line">In honour of LCpl Luke Gavin</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 2</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev2">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det2">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">3 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>500m Row</li><li>11 Deadlifts (90/60kg)</li><li>29 Push ups</li><li>82 Lunges</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Row, barbell</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Row: ski | Deadlifts: decrease load | Push ups: knee push ups</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w3">
+<button class="wod-trigger" onclick="toggleWod(3)">
+  <span class="wod-num-badge">#3</span>
+  <span class="wod-time-badge">1000</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Scottie</div>
+    <div class="wod-sub-line">In honour of Cpl Scott Smith</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 3</span>
+    
+    <span class="wod-cap-badge">18 min</span>
+    <span class="wod-chevron" id="chev3">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det3">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">10 Rounds (1 round =)</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>10m Farmers carry to pull up bar (32/24kg)</li><li>5x Under grasp strict pull ups (chin ups)</li><li>10m Farmers carry to deadlift bar (32/24kg)</li><li>5x Burpees</li><li>5x Deadlift (120/80kg) (265/175#)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>KBs, rig, barbell</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>18 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Farmer carry: decrease load | Chin ups: banded | Deadlifts: decrease load</span></div>
+    </div>
+    <div class="detail-note">&#9432; Place deadlift bar 10m from pull-up bar and do farmers carries between the two.</div>
+  </div>
+</div>
+</div><div class="wod-item " id="w4">
+<button class="wod-trigger" onclick="toggleWod(4)">
+  <span class="wod-num-badge">#4</span>
+  <span class="wod-time-badge">1100</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Jonesy</div>
+    <div class="wod-sub-line">In honour of LCpl Andre Jones</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 4</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev4">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det4">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">6 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>400m Run</li><li>6-5-4-3-2-1 Rope Climbs</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Run, rope climbs</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Run: 1000/850m bike erg | Rope climb: one lock out</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w5">
+<button class="wod-trigger" onclick="toggleWod(5)">
+  <span class="wod-num-badge">#5</span>
+  <span class="wod-time-badge">1200</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Palmer</div>
+    <div class="wod-sub-line">In honour of Pte Scott Palmer</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 5</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev5">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det5">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">5 Rounds for time + finish</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>2 reps 160/110kg Deadlift (355/245#)</li><li>3 reps Ring Muscle Up</li><li>10 reps Pull ups</li><li>15 reps 24/20 inch Box Jumps</li><li>Finish with 1000m Row</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>BB, rings, rig, box, row</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Deadlifts: decrease load | Ring mups: bar mups / ring transitions | Pull ups: banded | Box jumps: decrease height | Row: ski</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w6">
+<button class="wod-trigger" onclick="toggleWod(6)">
+  <span class="wod-num-badge">#6</span>
+  <span class="wod-time-badge">1300</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Akker</div>
+    <div class="wod-sub-line">In honour of Cpl Richard Atkinson</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 6</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev6">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det6">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">10 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>22 Push ups</li><li>22m Walking Lunges</li><li>22 Squats</li><li>22m Bear Crawl</li><li>200m Run</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Bodyweight, run</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Push ups: knees | Run: 500/425m bike erg</span></div>
+    </div>
+    <div class="detail-note">&#9432; 220 push ups total across the workout.</div>
+  </div>
+</div>
+</div><div class="wod-item " id="w7">
+<button class="wod-trigger" onclick="toggleWod(7)">
+  <span class="wod-num-badge">#7</span>
+  <span class="wod-time-badge">1400</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Matthew</div>
+    <div class="wod-sub-line">In honour of Constable Matthew Arnold</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 1</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev7">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det7">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">2 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>40 Wall Ball Goblet Squats 9/6kg (M/F)</li><li>40 Burpee Over Wall Ball</li><li>24 Wall Balls at 10ft(M)/9ft(F) - 9/6kg</li><li>100m Bear Crawl pushing wall ball 9/6kg</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Wall ball</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Decrease wall ball weight</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w8">
+<button class="wod-trigger" onclick="toggleWod(8)">
+  <span class="wod-num-badge">#8</span>
+  <span class="wod-time-badge">1500</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Rachel</div>
+    <div class="wod-sub-line">In honour of Constable Rachel McCrow</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 2</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev8">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det8">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">2 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>40 Box Jumps 24in(M) / 20in(F)</li><li>41 Barbell Push Press 40/30kg (M/F)</li><li>20 Dead Ball Slams 20/10kg (M/F)</li><li>5 Shuttle Runs out to 20m and back</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Box, barbell, sandbag/wall ball, shuttle run</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Box jumps: decrease height | Push press: decrease load | Dead ball slams: sandbag or wall ball</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w9">
+<button class="wod-trigger" onclick="toggleWod(9)">
+  <span class="wod-num-badge">#9</span>
+  <span class="wod-time-badge">1600</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Birt</div>
+    <div class="wod-sub-line">In honour of Cpl Ashley Birt</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 3</span>
+    
+    <span class="wod-cap-badge">25 min</span>
+    <span class="wod-chevron" id="chev9">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det9">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">11 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>29m Shuttle run</li><li>10 Burpees</li><li>10 Butterfly sit-ups</li><li>10 Thruster barbell 20kg(M) / 15kg(F)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Shuttle runs, bodyweight, empty barbell</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>25 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Barbell: decrease load</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w10">
+<button class="wod-trigger" onclick="toggleWod(10)">
+  <span class="wod-num-badge">#10</span>
+  <span class="wod-time-badge">1700</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Larcombe</div>
+    <div class="wod-sub-line">In honour of Sapper Jamie Larcombe</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 4</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev10">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det10">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">19 Rounds in 10kg weighted vest</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>200m Run</li><li>20 Air Squats</li><li>11 Burpee</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Vest, run</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>No vest | Run: 500/425m bike erg</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w11">
+<button class="wod-trigger" onclick="toggleWod(11)">
+  <span class="wod-num-badge">#11</span>
+  <span class="wod-time-badge">1800</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Sean McCarthy</div>
+    <div class="wod-sub-line">In honour of Signaller Sean McCarthy</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 5</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev11">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det11">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">10 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>5 Pull ups</li><li>10 Push ups</li><li>15 Sit ups</li><li>20 Air Squats</li><li>400m Run</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Bodyweight, run, pull ups</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Pull ups: banded | Push ups: knees | Run: 1000/850m bike erg</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item partner" id="w12">
+<button class="wod-trigger" onclick="toggleWod(12)">
+  <span class="wod-num-badge">#12</span>
+  <span class="wod-time-badge">1900</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Jason Brown</div>
+    <div class="wod-sub-line">In honour of Trooper Jason Brown</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Members 6 & 1</span>
+    <span class="wod-type-tag partner">Partner</span>
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev12">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det12">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">In pairs for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>5 rounds: 5 Deadlifts + 5 Hang Power Cleans + 5 Thrusters (135/95lb) then 600m run together</li><li>2 rounds: 5 Deadlifts + 5 Hang Power Cleans + 5 Thrusters (135/95lb) then 600m run together</li><li>3 rounds: 5 Deadlifts + 5 Hang Power Cleans + 5 Thrusters (135/95lb) then run together (share barbell reps as desired)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Barbell, run</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Barbell: decrease load | Run: 1500/1275m bike erg</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w13">
+<button class="wod-trigger" onclick="toggleWod(13)">
+  <span class="wod-num-badge">#13</span>
+  <span class="wod-time-badge">2000</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Benny</div>
+    <div class="wod-sub-line">In honour of Pte Benjamin Ranaudo</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 2</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev13">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det13">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">3 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>400m Run</li><li>21 KB Swings 1.5/1 pood (24/16kg)</li><li>15 Knees-to-Elbows</li><li>9 Ring Dips</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Run, KB, rig, ring dips</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Run: 1000/850m bike erg | KB swings: decrease load | K2E: knee raises | Bands for ring dips</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w14">
+<button class="wod-trigger" onclick="toggleWod(14)">
+  <span class="wod-num-badge">#14</span>
+  <span class="wod-time-badge">2100</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Walshy 142</div>
+    <div class="wod-sub-line">In honour of Sgt Leith Walsh</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 3</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev14">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det14">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">For time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>71 Back Squats (40/30kg)</li><li>Then 3 rounds: 800m Weighted Run (10/7kg) + 20 Snatches (40/30kg) + 19 American KB Swings (24/20kg)</li><li>Finally: 71 Back Squats (40/30kg) (95/65#)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Barbell, KB, run, vest</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Squats/snatches: decrease load | Run: no vest / 2000/1700m bike erg | KB swings: decrease load</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w15">
+<button class="wod-trigger" onclick="toggleWod(15)">
+  <span class="wod-num-badge">#15</span>
+  <span class="wod-time-badge">2200</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Aplin</div>
+    <div class="wod-sub-line">In honour of PTE Timothy Aplin</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 4</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev15">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det15">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">20 Rounds for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>6 reps Strict Pull ups</li><li>20 reps Push ups</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Pull up bar</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Pull ups: banded | Push ups: knees</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w16">
+<button class="wod-trigger" onclick="toggleWod(16)">
+  <span class="wod-num-badge">#16</span>
+  <span class="wod-time-badge">2300</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Sher</div>
+    <div class="wod-sub-line">In honour of Pte Gregory Michael Sher</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 5</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev16">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det16">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">For time - descending ladder</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>3/4 BW Clean (Full Squat): 10-9-8-7-6-5-4-3-2-1</li><li>Burpee Chin (Dead Hang): 20-18-16-14-12-10-8-6-4-2</li><li>Double Unders: 30-27-24-21-18-15-12-9-6-3</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Barbell, pull up bar, skipping rope</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Squat: decrease load | Burpee chin: jumping chin up | Dubs: singles (double reps)</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w17">
+<button class="wod-trigger" onclick="toggleWod(17)">
+  <span class="wod-num-badge">#17</span>
+  <span class="wod-time-badge">0000</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Locke</div>
+    <div class="wod-sub-line">In honour of Sgt Matthew Locke</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 6</span>
+    
+    <span class="wod-cap-badge">33 min</span>
+    <span class="wod-chevron" id="chev17">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det17">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">AMRAP in 33 mins</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>50m Farmers Carry (2x24kg M / 2x16kg F)</li><li>25 DBL KB Squat</li><li>10 Burpee Pull Up</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>KBs, pull up bar</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>33 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Farmer carry: decrease load | Squats: decrease load | Burpee pull up: burpee jumping pull up</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w18">
+<button class="wod-trigger" onclick="toggleWod(18)">
+  <span class="wod-num-badge">#18</span>
+  <span class="wod-time-badge">0100</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Lambo</div>
+    <div class="wod-sub-line">In honour of Pte Matthew Lambert</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 1</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev18">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det18">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">21-15-9 reps for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>Squat Snatch (50/35kg) (115/75#)</li><li>Kettlebell Swings (32/24kg)</li><li>Toes to Bar</li><li>Buy out: 100 Double Unders</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Barbell, KB, rig, skipping rope</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Squat snatch: power snatch / decrease load | KB swings: decrease load | T2B: SLR / knee raises | Dubs: single unders (double reps)</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item " id="w19">
+<button class="wod-trigger" onclick="toggleWod(19)">
+  <span class="wod-num-badge">#19</span>
+  <span class="wod-time-badge">0200</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Brad</div>
+    <div class="wod-sub-line">In honour of Pte Bradley Wayne Carr</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Member 2</span>
+    
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev19">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det19">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">7 Rounds + finish</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>11 Alternating Single leg squats (pistols)</li><li>11 Push ups</li><li>84 Double Unders</li><li>Then: 2000m Row</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Skipping rope, row, bodyweight</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Pistol squats: assisted / single leg box squats | Push ups: knees | Dubs: single unders (double reps) | Row: ski</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item team" id="w20">
+<button class="wod-trigger" onclick="toggleWod(20)">
+  <span class="wod-num-badge">#20</span>
+  <span class="wod-time-badge">0300</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Land Shark</div>
+    <div class="wod-sub-line">In honour of KUGA, QUAKE, DEVIL and FAX</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Members 3,4,5,6</span>
+    <span class="wod-type-tag team">Team of 4</span>
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev20">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det20">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">Teams of 4 for time</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>100 DB/KB Clean and Press - 2 synchro / 2 front rack hold (10 burpee penalty per switch for ONE member - no penalty if same pair continues)</li><li>100 Suitcase Lunges - 2 synchro / 2 front rack hold (10 burpee penalty per switch for ONE member - no penalty if same pair continues)</li><li>100 Synchro Pull ups - 2 synchro / 2 front rack hold (10 burpee penalty per switch for ONE member - no penalty if same pair continues)</li><li>100 Air Squats - 4 people synchro (10 burpee penalty for ALL members each time sync breaks)</li><li>Buy out: 800m Buddy Carry (one member carried, carriers can swap)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>1 x DB 22.5/15kg each or 1 x KB 24/16kg each</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>DBs/KBs: choose your weight | Pull ups: banded pull ups</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item partner" id="w21">
+<button class="wod-trigger" onclick="toggleWod(21)">
+  <span class="wod-num-badge">#21</span>
+  <span class="wod-time-badge">0400</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Dougie and Leon</div>
+    <div class="wod-sub-line">In honour of CPL Dougie Grant and LCPL Leon Smith</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Members 1 & 2</span>
+    <span class="wod-type-tag partner">Partner</span>
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev21">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det21">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">For time (with a partner)</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>400m Run with Deadball (20/15kg)</li><li>Then 5 rounds: 40 Ball Slams + 2 Tuck Jumps + 40 Pull-Ups + 40 Power Cleans (40/60kg) + 40 Push-Ups + 40 Shoulder-to-Overhead (40/60kg) + 100m Run</li><li>Then: 400m Run with Deadball (20/15kg)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Sandbag/wall ball, pull up bar, barbell, run</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Run: walk (no machine sub) | Pull ups: banded | Power cleans and STO: decrease load | Push ups: knees</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item partner" id="w22">
+<button class="wod-trigger" onclick="toggleWod(22)">
+  <span class="wod-num-badge">#22</span>
+  <span class="wod-time-badge">0500</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Addison and Spears</div>
+    <div class="wod-sub-line">In honour of Addison and Spears</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Members 3 & 4</span>
+    <span class="wod-type-tag partner">Partner</span>
+    <span class="wod-cap-badge">40 min</span>
+    <span class="wod-chevron" id="chev22">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det22">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">6 Rounds for time - In pairs</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>15 Cleans 155/105lb (70/48kg) - performed 1 for 1</li><li>21 Toes to Bar (P1: 13 reps then P2: 8 reps - P1 completes all 13 before P2 starts)</li><li>59 Synchro Squats</li><li>Rounds 4, 5 and 6 wear weight vest (20/14#)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Vests, barbell and rig</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>40 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Cleans: load | Toes to bar: straight leg raises / knee raises</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item partner" id="w23">
+<button class="wod-trigger" onclick="toggleWod(23)">
+  <span class="wod-num-badge">#23</span>
+  <span class="wod-time-badge">0600</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Bernard Sydney Gordon</div>
+    <div class="wod-sub-line">In honour of Bernard Sydney Gordon</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">Members 5 & 6</span>
+    <span class="wod-type-tag partner">Partner</span>
+    <span class="wod-cap-badge">35 min</span>
+    <span class="wod-chevron" id="chev23">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det23">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">4 Rounds for time - all reps shared</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>28 Wall Balls (14/20lb)</li><li>28 Hand-Release Push-Ups</li><li>28 Box Jump Overs (20/24in)</li><li>28 KB Swings (24/32kg)</li><li>28m Bear Crawl (100ft)</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>Wall ball, box, KB</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>35 min</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>Wall balls: decrease load | Hand release push ups: knees | BJOs: decrease height | KB swings: decrease load</span></div>
+    </div>
+    
+  </div>
+</div>
+</div><div class="wod-item final" id="w24">
+<button class="wod-trigger" onclick="toggleWod(24)">
+  <span class="wod-num-badge">#24</span>
+  <span class="wod-time-badge">0700</span>
+  <div class="wod-info">
+    <div class="wod-title-line">Our Heroes</div>
+    <div class="wod-sub-line">In honour of All Heroes, Past and Present</div>
+  </div>
+  <div class="wod-right">
+    <span class="wod-member-tag">All 6 members</span>
+    <span class="wod-type-tag final">All Members</span>
+    <span class="wod-cap-badge">TBC</span>
+    <span class="wod-chevron" id="chev24">&#9660;</span>
+  </div>
+</button>
+<div class="wod-detail" id="det24">
+  <div class="wod-detail-inner">
+    <div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">TBC - All 6 members</div></div>
+    <div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list"><li>Details to be confirmed</li></ul></div>
+    <div class="detail-grid">
+      <div class="detail-chip"><strong>Equipment</strong><span>TBC</span></div>
+      <div class="detail-chip"><strong>Time Cap</strong><span>TBC</span></div>
+      <div class="detail-chip full"><strong>Scaling</strong><span>TBC</span></div>
+    </div>
+    
+  </div>
+</div>
+</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#7B5EA7"></div>Partner WOD</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2EBFA5"></div>Team WOD</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F5A623"></div>Final WOD</div>
+</div>
+<footer class="footer">In honour of all heroes, past and present.</footer>
+
+<script>
+function toggleWod(n) {
+  var d = document.getElementById('det'+n);
+  var c = document.getElementById('chev'+n);
+  if (!d) return;
+  var open = d.style.display === 'block';
+  d.style.display = open ? 'none' : 'block';
+  if (c) c.style.webkitTransform = c.style.transform = open ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+</script>
+</body>
+</html>
