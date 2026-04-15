@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>24 Hours of Heroes — CFNB 2026</title>
+<style>
+  * { -webkit-box-sizing: border-box; box-sizing: border-box; margin: 0; padding: 0; -webkit-text-size-adjust: 100%; }
+
+  :root {
+    --gold: #F5A623;
+    --gold-dim: #B8791A;
+    --gold-glow: rgba(245,166,35,0.15);
+    --dark: #0D0D0D;
+    --card: #1C1C1C;
+    --border: rgba(255,255,255,0.08);
+    --text: #E8E4DC;
+    --muted: #7A7570;
+    --cyan: #2EBFA5;
+  }
+
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+  }
+
+  /* HEADER */
+  .hero {
+    position: relative;
+    padding: 40px 20px 32px;
+    text-align: center;
+    background: #0a0a0a;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .hero-eyebrow { font-size: 11px; letter-spacing: 4px; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; }
+  .hero-title {
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 0.88;
+    color: var(--text);
+    letter-spacing: -1px;
+    text-transform: uppercase;
+  }
+  .hero-title { font-size: clamp(48px, 14vw, 88px); }
+  .hero-title span { color: var(--gold); }
+  .hero-sub { margin-top: 12px; font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+  .hero-date {
+    display: inline-block;
+    margin-top: 14px;
+    background: var(--gold-glow);
+    border: 1px solid var(--gold-dim);
+    border-radius: 4px;
+    padding: 5px 14px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .hero-team {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 6px;
+    color: var(--text);
+    opacity: 0.5;
+    text-transform: uppercase;
+  }
+
+  /* TABS */
+  .tabs-wrap {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    gap: 0;
+    padding: 0 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    border-bottom: 1px solid var(--border);
+    background: var(--dark);
+  }
+  .tabs-wrap::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 14px 16px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    cursor: pointer;
+    white-space: nowrap;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+  }
+  .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* PANELS */
+  .person-panel { display: none; padding: 20px 16px 40px; max-width: 680px; margin: 0 auto; }
+  .person-panel.active { display: block; }
+
+  .person-header {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .person-name { font-size: clamp(34px, 8vw, 52px); font-weight: 900; letter-spacing: -1px; line-height: 1; color: var(--text); text-transform: uppercase; }
+  .person-role { font-size: 11px; color: var(--muted); letter-spacing: 2px; margin-top: 4px; text-transform: uppercase; }
+  .person-stats {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    gap: 8px;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+  .stat-pill { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.5px; }
+  .stat-pill.wods { background: rgba(245,166,35,0.15); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+  .stat-pill.solo { background: rgba(46,191,165,0.1); color: var(--cyan); border: 1px solid rgba(46,191,165,0.25); }
+
+  /* WOD LIST */
+  .wod-list { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-box-orient: vertical; -webkit-flex-direction: column; flex-direction: column; gap: 10px; }
+
+  .wod-item { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .wod-item.partner { border-left: 3px solid #7B5EA7; }
+  .wod-item.team { border-left: 3px solid var(--cyan); }
+  .wod-item.final { border-left: 3px solid var(--gold); }
+
+  .wod-trigger {
+    width: 100%;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 16px;
+    background: none;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    text-align: left;
+    min-height: 64px;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-appearance: none;
+  }
+
+  .wod-num-badge {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    min-width: 30px;
+    text-align: center;
+    padding: 4px 6px;
+    border-radius: 4px;
+    background: var(--gold-glow);
+    color: var(--gold);
+    border: 1px solid rgba(245,166,35,0.2);
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .wod-time-badge {
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: 0;
+    color: var(--text);
+    min-width: 46px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .wod-info { -webkit-flex: 1 1 auto; flex: 1 1 auto; min-width: 0; }
+  .wod-title-line { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .wod-honour { font-size: 11px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  .wod-right {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    gap: 6px;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
+  }
+  .wod-cap-badge { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; background: rgba(46,191,165,0.1); color: var(--cyan); border: 1px solid rgba(46,191,165,0.2); white-space: nowrap; }
+  .wod-type-tag { font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+  .wod-type-tag.partner { background: rgba(123,94,167,0.15); color: #B59FD8; border: 1px solid rgba(123,94,167,0.3); }
+  .wod-type-tag.team { background: rgba(46,191,165,0.1); color: var(--cyan); border: 1px solid rgba(46,191,165,0.25); }
+  .wod-type-tag.final { background: var(--gold-glow); color: var(--gold); border: 1px solid rgba(245,166,35,0.3); }
+  .wod-chevron { font-size: 9px; color: var(--muted); -webkit-transition: -webkit-transform 0.25s; transition: transform 0.25s; }
+  .wod-item.open .wod-chevron { -webkit-transform: rotate(180deg); transform: rotate(180deg); }
+
+  /* WOD DETAIL */
+  .wod-detail { max-height: 0; overflow: hidden; -webkit-transition: max-height 0.35s ease; transition: max-height 0.35s ease; }
+  .wod-detail-inner { padding: 0 16px 18px; border-top: 1px solid var(--border); }
+
+  .detail-section { margin-top: 14px; }
+  .detail-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; }
+  .detail-scheme { font-size: 18px; font-weight: 900; letter-spacing: 0; color: var(--gold); line-height: 1.2; text-transform: uppercase; }
+
+  .movement-list { list-style: none; margin-top: 8px; }
+  .movement-list li {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .movement-list li:last-child { border-bottom: none; }
+  .movement-list li::before { content: '—'; color: var(--gold-dim); -webkit-flex-shrink: 0; flex-shrink: 0; margin-top: 1px; }
+
+  .detail-grid { display: -webkit-box; display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .detail-chip { -webkit-flex: 1 1 140px; flex: 1 1 140px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .detail-chip.full { -webkit-flex-basis: 100%; flex-basis: 100%; }
+  .detail-chip strong { display: block; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; font-weight: 700; }
+  .detail-chip span { color: var(--text); font-size: 13px; }
+  .detail-note { margin-top: 10px; padding: 8px 10px; background: rgba(245,166,35,0.05); border: 1px solid rgba(245,166,35,0.15); border-radius: 6px; font-size: 12px; color: var(--gold-dim); line-height: 1.5; }
+
+  /* LEGEND + FOOTER */
+  .legend {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    gap: 16px;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+  }
+  .legend-item {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .legend-dot { width: 10px; height: 10px; border-radius: 2px; -webkit-flex-shrink: 0; flex-shrink: 0; }
+  .footer { text-align: center; padding: 20px; font-size: 11px; color: var(--muted); letter-spacing: 1px; border-top: 1px solid var(--border); }
+
+  @media (max-width: 480px) {
+    .wod-cap-badge, .wod-type-tag { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-eyebrow">CFNB · Australia 2026</div>
+  <div class="hero-title">24 HOURS<br>OF <span>HEROES</span></div>
+  <div class="hero-sub">Team Run Sheet — Member Allocations</div>
+  <div class="hero-date">April 18–19, 2026</div>
+  <div class="hero-team">Team · Classified</div>
+</header>
+
+<nav class="tabs-wrap" id="tabs"></nav>
+<main id="panels"></main>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#7B5EA7"></div>Partner WOD</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#2EBFA5"></div>Team WOD</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#F5A623"></div>Final WOD</div>
+</div>
+<footer class="footer">In honour of all heroes, past and present.</footer>
+
+<script>
+var ALL_WODS = {
+  1:  { num:1,  time:"0800", name:"Turns",             honour:"Ian Turns",                          cap:"40 min", type:"solo",    scheme:"5 Rounds for time", movements:["15 Push Press 50/35kg (115/85#)","21 Front Squat","400m Run"], equipment:"Barbell, run", scaling:"Push press & front squat: decrease load | Run: 1000/850m bike erg" },
+  2:  { num:2,  time:"0900", name:"Gav",               honour:"LCpl Luke Gavin",                    cap:"40 min", type:"solo",    scheme:"3 Rounds for time", movements:["500m Row","11 Deadlifts (90/60kg)","29 Push ups","82 Lunges"], equipment:"Row, barbell", scaling:"Row: ski | Deadlifts: decrease load | Push ups: knee push ups" },
+  3:  { num:3,  time:"1000", name:"Scottie",           honour:"Cpl Scott Smith",                    cap:"18 min", type:"solo",    scheme:"10 Rounds (1 round =)", movements:["10m Farmers carry to pull up bar (32/24kg)","5x Under grasp strict pull ups (chin ups)","10m Farmers carry to deadlift bar (32/24kg)","5x Burpees","5x Deadlift (120/80kg) (265/175#)"], equipment:"KBs, rig, barbell", scaling:"Farmer carry: decrease load | Chin ups: banded | Deadlifts: decrease load", note:"Place deadlift bar 10m from pull-up bar and do farmers carries between the two." },
+  4:  { num:4,  time:"1100", name:"Jonesy",            honour:"LCpl Andre Jones",                   cap:"40 min", type:"solo",    scheme:"6 Rounds for time", movements:["400m Run","6-5-4-3-2-1 Rope Climbs"], equipment:"Run, rope climbs", scaling:"Run: 1000/850m bike erg | Rope climb: one lock out" },
+  5:  { num:5,  time:"1200", name:"Palmer",            honour:"Pte Scott Palmer",                   cap:"40 min", type:"solo",    scheme:"5 Rounds for time + finish", movements:["2 reps 160/110kg Deadlift (355/245#)","3 reps Ring Muscle Up","10 reps Pull ups","15 reps 24/20 inch Box Jumps","Finish with 1000m Row"], equipment:"BB, rings, rig, box, row", scaling:"Deadlifts: decrease load | Ring mups: bar mups / ring transitions | Pull ups: banded | Box jumps: decrease height | Row: ski" },
+  6:  { num:6,  time:"1300", name:"Akker",             honour:"Cpl Richard Atkinson",               cap:"40 min", type:"solo",    scheme:"10 Rounds for time", movements:["22 Push ups","22m Walking Lunges","22 Squats","22m Bear Crawl","200m Run"], equipment:"Bodyweight, run", scaling:"Push ups: knees | Run: 500/425m bike erg", note:"220 push ups total across the workout." },
+  7:  { num:7,  time:"1400", name:"Matthew",           honour:"Constable Matthew Arnold",           cap:"40 min", type:"solo",    scheme:"2 Rounds for time", movements:["40 Wall Ball Goblet Squats 9/6kg (M/F)","40 Burpee Over Wall Ball","24 Wall Balls at 10ft(M)/9ft(F) — 9/6kg","100m Bear Crawl pushing wall ball 9/6kg"], equipment:"Wall ball", scaling:"Decrease wall ball weight" },
+  8:  { num:8,  time:"1500", name:"Rachel",            honour:"Constable Rachel McCrow",            cap:"40 min", type:"solo",    scheme:"2 Rounds for time", movements:["40 Box Jumps 24in(M) / 20in(F)","41 Barbell Push Press 40/30kg (M/F)","20 Dead Ball Slams 20/10kg (M/F)","5 Shuttle Runs out to 20m & back"], equipment:"Box, barbell, sandbag/wall ball, shuttle run", scaling:"Box jumps: decrease height | Push press: decrease load | Dead ball slams: sandbag or wall ball" },
+  9:  { num:9,  time:"1600", name:"Birt",              honour:"Cpl Ashley Birt",                    cap:"25 min", type:"solo",    scheme:"11 Rounds for time", movements:["29m Shuttle run","10 Burpees","10 Butterfly sit-ups","10 Thruster barbell 20kg(M) / 15kg(F)"], equipment:"Shuttle runs, bodyweight, empty barbell", scaling:"Barbell: decrease load" },
+  10: { num:10, time:"1700", name:"Larcombe",          honour:"Sapper Jamie Larcombe",              cap:"40 min", type:"solo",    scheme:"19 Rounds in 10kg weighted vest", movements:["200m Run","20 Air Squats","11 Burpee"], equipment:"Vest, run", scaling:"No vest | Run: 500/425m bike erg" },
+  11: { num:11, time:"1800", name:"Sean McCarthy",     honour:"Signaller Sean McCarthy",            cap:"40 min", type:"solo",    scheme:"10 Rounds for time", movements:["5 Pull ups","10 Push ups","15 Sit ups","20 Air Squats","400m Run"], equipment:"Bodyweight, run, pull ups", scaling:"Pull ups: banded | Push ups: knees | Run: 1000/850m bike erg" },
+  12: { num:12, time:"1900", name:"Jason Brown",       honour:"Trooper Jason Brown",                cap:"40 min", type:"partner", scheme:"In pairs for time", movements:["5 rounds: 5 Deadlifts + 5 Hang Power Cleans + 5 Thrusters (135/95lb) then 600m run together","2 rounds: 5 Deadlifts + 5 Hang Power Cleans + 5 Thrusters (135/95lb) then 600m run together","3 rounds: 5 Deadlifts + 5 Hang Power Cleans + 5 Thrusters (135/95lb) then run together (share barbell reps as desired)"], equipment:"Barbell, run", scaling:"Barbell: decrease load | Run: 1500/1275m bike erg", note:"Stacey (P1) + Veronica (P6)" },
+  13: { num:13, time:"2000", name:"Benny",             honour:"Pte Benjamin Ranaudo",               cap:"40 min", type:"solo",    scheme:"3 Rounds for time", movements:["400m Run","21 KB Swings 1.5/1 pood (24/16kg)","15 Knees-to-Elbows","9 Ring Dips"], equipment:"Run, KB, rig, ring dips", scaling:"Run: 1000/850m bike erg | KB swings: decrease load | K2E: knee raises | Bands for ring dips" },
+  14: { num:14, time:"2100", name:"Walshy 142",        honour:"Sgt Leith Walsh",                    cap:"40 min", type:"solo",    scheme:"For time", movements:["71 Back Squats (40/30kg)","Then 3 rounds: 800m Weighted Run (10/7kg) + 20 Snatches (40/30kg) + 19 American KB Swings (24/20kg)","Finally: 71 Back Squats (40/30kg) (95/65#)"], equipment:"Barbell, KB, run, vest", scaling:"Squats/snatches: decrease load | Run: no vest / 2000/1700m bike erg | KB swings: decrease load" },
+  15: { num:15, time:"2200", name:"Aplin",             honour:"PTE Timothy Aplin",                  cap:"40 min", type:"solo",    scheme:"20 Rounds for time", movements:["6 reps Strict Pull ups","20 reps Push ups"], equipment:"Pull up bar", scaling:"Pull ups: banded | Push ups: knees" },
+  16: { num:16, time:"2300", name:"Sher",              honour:"Pte Gregory Michael Sher",           cap:"40 min", type:"solo",    scheme:"For time — descending ladder", movements:["3/4 BW Clean (Full Squat): 10-9-8-7-6-5-4-3-2-1","Burpee Chin (Dead Hang): 20-18-16-14-12-10-8-6-4-2","Double Unders: 30-27-24-21-18-15-12-9-6-3"], equipment:"Barbell, pull up bar, skipping rope", scaling:"Squat: decrease load | Burpee chin: jumping chin up | Dubs: singles (double reps)" },
+  17: { num:17, time:"0000", name:"Locke",             honour:"Sgt Matthew Locke",                  cap:"33 min", type:"solo",    scheme:"AMRAP in 33 mins", movements:["50m Farmers Carry (2x24kg M / 2x16kg F)","25 DBL KB Squat","10 Burpee Pull Up"], equipment:"KBs, pull up bar", scaling:"Farmer carry: decrease load | Squats: decrease load | Burpee pull up: burpee jumping pull up" },
+  18: { num:18, time:"0100", name:"Lambo",             honour:"Pte Matthew Lambert",                cap:"40 min", type:"solo",    scheme:"21-15-9 reps for time", movements:["Squat Snatch (50/35kg) (115/75#)","Kettlebell Swings (32/24kg)","Toes to Bar","Buy out: 100 Double Unders"], equipment:"Barbell, KB, rig, skipping rope", scaling:"Squat snatch: power snatch into squat / decrease load | KB swings: decrease load | T2B: SLR / knee raises | Dubs: single unders (double reps)" },
+  19: { num:19, time:"0200", name:"Brad",              honour:"Pte Bradley Wayne Carr",             cap:"40 min", type:"solo",    scheme:"7 Rounds + finish", movements:["11 Alternating Single leg squats (pistols)","11 Push ups","84 Double Unders","Then: 2000m Row"], equipment:"Skipping rope, row, bodyweight", scaling:"Pistol squats: assisted / single leg box squats | Push ups: knees | Dubs: single unders (double reps) | Row: ski" },
+  20: { num:20, time:"0300", name:"Land Shark",        honour:"KUGA, QUAKE, DEVIL & FAX",           cap:"40 min", type:"team",    scheme:"Teams of 4 for time", movements:["100 DB/KB Clean and Press — 2 synchro / 2 front rack hold (10 burpee penalty per switch for ONE member — no penalty if same pair continues)","100 Suitcase Lunges — 2 synchro / 2 front rack hold (10 burpee penalty per switch for ONE member — no penalty if same pair continues)","100 Synchro Pull ups — 2 synchro / 2 front rack hold (10 burpee penalty per switch for ONE member — no penalty if same pair continues)","100 Air Squats — 4 people synchro (10 burpee penalty for ALL members each time sync breaks)","Buy out: 800m Buddy Carry (one member carried, carriers can swap)"], equipment:"1 x DB 22.5/15kg each or 1 x KB 24/16kg each", scaling:"DBs/KBs: choose your weight | Pull ups: banded pull ups", note:"Kylie (P3) + Rinus (P4) + Flaz (P5) + Veronica (P6)" },
+  21: { num:21, time:"0400", name:"Dougie & Leon",     honour:"CPL Dougie Grant & LCPL Leon Smith", cap:"40 min", type:"partner", scheme:"For time (with a partner)", movements:["400m Run with Deadball (20/15kg)","Then 5 rounds: 40 Ball Slams + 2 Tuck Jumps + 40 Pull-Ups + 40 Power Cleans (40/60kg) + 40 Push-Ups + 40 Shoulder-to-Overhead (40/60kg) + 100m Run","Then: 400m Run with Deadball (20/15kg)"], equipment:"Sandbag/wall ball, pull up bar, barbell, run", scaling:"Run: walk (no machine sub) | Pull ups: banded | Power cleans & STO: decrease load | Push ups: knees", note:"Stacey (P1) + Brian (P2)" },
+  22: { num:22, time:"0500", name:"Addison & Spears",  honour:"Addison & Spears",                   cap:"40 min", type:"partner", scheme:"6 Rounds for time — In pairs", movements:["15 Cleans 155/105lb (70/48kg) — performed 1 for 1","21 Toes to Bar (P1: 13 reps, P2: 8 reps)","59 Synchro Squats","Rounds 4, 5 & 6 wear weight vest (20/14#)"], equipment:"Vests, barbell & rig", scaling:"Cleans: load | Toes to bar: straight leg raises / knee raises", note:"Kylie (P3) + Rinus (P4)" },
+  23: { num:23, time:"0600", name:"Bernard Sydney Gordon", honour:"Bernard Sydney Gordon",          cap:"35 min", type:"partner", scheme:"4 Rounds for time — all reps shared", movements:["28 Wall Balls (14/20lb)","28 Hand-Release Push-Ups","28 Box Jump Overs (20/24in)","28 KB Swings (24/32kg)","28m Bear Crawl (100ft)"], equipment:"Wall ball, box, KB", scaling:"Wall balls: decrease load | Hand release push ups: knees | BJOs: decrease height | KB swings: decrease load", note:"Flaz (P5) + Veronica (P6)" },
+  24: { num:24, time:"0700", name:"Our Heroes",        honour:"All Heroes, Past and Present",       cap:"TBC",    type:"final",   scheme:"TBC — All 6 members", movements:["Details to be confirmed"], equipment:"TBC", scaling:"TBC" }
+};
+
+var PEOPLE = [
+  { label:"Stacey",   slot:"Person 1", wods:[1, 7, 12, 18, 21, 24] },
+  { label:"Brian",    slot:"Person 2", wods:[2, 8, 13, 19, 21, 24] },
+  { label:"Kylie",    slot:"Person 3", wods:[3, 9, 14, 20, 22, 24] },
+  { label:"Rinus",    slot:"Person 4", wods:[4, 10, 15, 20, 22, 24] },
+  { label:"Flaz",     slot:"Person 5", wods:[5, 11, 16, 20, 23, 24] },
+  { label:"Veronica", slot:"Person 6", wods:[6, 12, 17, 20, 23, 24] }
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+
+var tabsEl = document.getElementById('tabs');
+var panelsEl = document.getElementById('panels');
+
+function buildPanel(person, idx) {
+  var wodCount = person.wods.length;
+  var soloCount = 0;
+  for (var s = 0; s < person.wods.length; s++) {
+    if (ALL_WODS[person.wods[s]].type === 'solo') soloCount++;
+  }
+
+  var html = '<div class="person-panel' + (idx === 0 ? ' active' : '') + '" id="panel-' + idx + '">';
+  html += '<div class="person-header">';
+  html += '<div><div class="person-name">' + person.label + '</div><div class="person-role">' + person.slot + '</div></div>';
+  html += '<div class="person-stats"><span class="stat-pill wods">' + wodCount + ' WODs</span><span class="stat-pill solo">' + soloCount + ' Solo</span></div>';
+  html += '</div>';
+  html += '<div class="wod-list">';
+
+  for (var i = 0; i < person.wods.length; i++) {
+    var id = person.wods[i];
+    var w = ALL_WODS[id];
+    var typeClass = w.type === 'partner' ? 'partner' : w.type === 'team' ? 'team' : w.type === 'final' ? 'final' : '';
+    var typeLabel = w.type === 'partner' ? 'Partner' : w.type === 'team' ? 'Team of 4' : w.type === 'final' ? 'All Members' : '';
+
+    var movements = '';
+    for (var m = 0; m < w.movements.length; m++) {
+      movements += '<li>' + w.movements[m] + '</li>';
+    }
+
+    html += '<div class="wod-item ' + typeClass + '" id="wod-' + idx + '-' + id + '">';
+    html += '<button class="wod-trigger" onclick="toggleWod(\'' + idx + '-' + id + '\')">';
+    html += '<span class="wod-num-badge">#' + w.num + '</span>';
+    html += '<span class="wod-time-badge">' + w.time + '</span>';
+    html += '<div class="wod-info"><div class="wod-title-line">' + w.name + '</div><div class="wod-honour">In honour of ' + w.honour + '</div></div>';
+    html += '<div class="wod-right">';
+    if (typeLabel) html += '<span class="wod-type-tag ' + typeClass + '">' + typeLabel + '</span>';
+    html += '<span class="wod-cap-badge">' + w.cap + '</span>';
+    html += '<span class="wod-chevron">&#9660;</span>';
+    html += '</div>';
+    html += '</button>';
+    html += '<div class="wod-detail" id="detail-' + idx + '-' + id + '">';
+    html += '<div class="wod-detail-inner">';
+    html += '<div class="detail-section"><div class="detail-label">Scheme</div><div class="detail-scheme">' + w.scheme + '</div></div>';
+    html += '<div class="detail-section"><div class="detail-label">Movements</div><ul class="movement-list">' + movements + '</ul></div>';
+    html += '<div class="detail-grid">';
+    html += '<div class="detail-chip"><strong>Equipment</strong><span>' + w.equipment + '</span></div>';
+    html += '<div class="detail-chip"><strong>Time Cap</strong><span>' + w.cap + '</span></div>';
+    html += '<div class="detail-chip full"><strong>Scaling</strong><span>' + w.scaling + '</span></div>';
+    html += '</div>';
+    if (w.note) html += '<div class="detail-note">&#9432; ' + w.note + '</div>';
+    html += '</div></div></div>';
+  }
+
+  html += '</div></div>';
+  return html;
+}
+
+for (var p = 0; p < PEOPLE.length; p++) {
+  var btn = document.createElement('button');
+  btn.className = 'tab-btn' + (p === 0 ? ' active' : '');
+  btn.textContent = PEOPLE[p].label;
+  btn.setAttribute('data-idx', p);
+  btn.onclick = function() {
+    var idx = parseInt(this.getAttribute('data-idx'));
+    showPerson(idx);
+  };
+  tabsEl.appendChild(btn);
+}
+
+var allPanelsHTML = '';
+for (var p = 0; p < PEOPLE.length; p++) {
+  allPanelsHTML += buildPanel(PEOPLE[p], p);
+}
+panelsEl.innerHTML = allPanelsHTML;
+
+}); // end DOMContentLoaded
+
+function showPerson(idx) {
+  var panels = document.querySelectorAll('.person-panel');
+  var btns = document.querySelectorAll('.tab-btn');
+  for (var i = 0; i < panels.length; i++) {
+    if (i === idx) {
+      panels[i].className = 'person-panel active';
+      btns[i].className = 'tab-btn active';
+    } else {
+      panels[i].className = 'person-panel';
+      btns[i].className = 'tab-btn';
+    }
+  }
+  btns[idx].scrollIntoView({ block: 'nearest', inline: 'center' });
+  window.scrollTo(0, 0);
+}
+
+function toggleWod(key) {
+  var item = document.getElementById('wod-' + key);
+  var detail = document.getElementById('detail-' + key);
+  if (!item || !detail) return;
+  var isOpen = item.className.indexOf('open') !== -1;
+  if (isOpen) {
+    item.className = item.className.replace(' open', '');
+    detail.style.maxHeight = '0';
+  } else {
+    item.className += ' open';
+    detail.style.maxHeight = (detail.scrollHeight + 200) + 'px';
+  }
+}
+</script>
+</body>
+</html>
