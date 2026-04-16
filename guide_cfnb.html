@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>24HoH Survival Guide - CFNB</title>
+<style>
+*{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0;-webkit-text-size-adjust:100%;}
+:root{--gold:#F5A623;--gold-dim:#B8791A;--gold-glow:rgba(245,166,35,0.15);--dark:#0D0D0D;--card:#1C1C1C;--border:rgba(255,255,255,0.08);--text:#E8E4DC;--muted:#7A7570;--cyan:#2EBFA5;}
+body{background:var(--dark);color:var(--text);font-family:-apple-system,"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:15px;line-height:1.7;min-height:100vh;overflow-x:hidden;padding-bottom:60px;}
+.topnav{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;padding:12px 16px;background:#111;border-bottom:1px solid var(--border);}
+.topnav-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.topnav-link{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);text-decoration:none;padding:6px 12px;border:1px solid rgba(245,166,35,0.3);border-radius:4px;-webkit-tap-highlight-color:transparent;}
+.hero{padding:40px 20px 28px;text-align:center;background:#0a0a0a;border-bottom:1px solid var(--border);}
+.hero-eyebrow{font-size:11px;letter-spacing:4px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;}
+.hero-title{font-size:clamp(40px,10vw,72px);font-weight:900;line-height:0.92;color:var(--text);letter-spacing:-1px;text-transform:uppercase;margin-bottom:6px;}
+.hero-title span{color:var(--gold);}
+.hero-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:12px;}
+.hero-tag{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);border:1px solid rgba(245,166,35,0.3);padding:5px 14px;border-radius:4px;}
+.tabs-wrap{display:-webkit-box;display:-webkit-flex;display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none;border-bottom:1px solid var(--border);background:var(--dark);padding:0 8px;}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.tab-btn{-webkit-flex-shrink:0;flex-shrink:0;font-size:12px;font-weight:600;padding:14px 14px;background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);cursor:pointer;white-space:nowrap;min-height:48px;-webkit-tap-highlight-color:transparent;-webkit-appearance:none;letter-spacing:0.5px;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.section{display:none;padding:28px 20px 40px;max-width:680px;margin:0 auto;}
+.section.active{display:block;}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid rgba(245,166,35,0.2);}
+.lead{font-size:17px;line-height:1.6;color:var(--text);font-style:italic;margin-bottom:24px;padding-left:14px;border-left:3px solid var(--gold);}
+p{font-size:15px;color:#C8C4BC;margin-bottom:16px;line-height:1.75;}
+.highlight{color:var(--gold);font-style:italic;}
+.rule{background:#161616;border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:0 6px 6px 0;padding:12px 14px;margin-bottom:10px;}
+.rule .rl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:5px;}
+.rule p{margin:0;font-size:14px;color:#C8C4BC;line-height:1.6;}
+.nap-grid{display:-webkit-box;display:-webkit-flex;display:flex;gap:10px;margin-bottom:20px;-webkit-flex-wrap:wrap;flex-wrap:wrap;}
+.nap-card{-webkit-flex:1 1 130px;flex:1 1 130px;background:#161616;border:1px solid var(--border);border-radius:6px;padding:14px;}
+.nap-card .nt{font-size:20px;font-weight:900;color:var(--gold);margin-bottom:4px;}
+.nap-card p{font-size:13px;color:#9A9590;margin:0;line-height:1.5;}
+.warn{background:rgba(245,166,35,0.05);border:1px solid rgba(245,166,35,0.2);border-radius:6px;padding:14px 16px;margin-bottom:14px;}
+.warn p{margin:0;font-size:14px;color:#C8C4BC;line-height:1.65;}
+h3{font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin:22px 0 10px;}
+hr{border:none;border-top:1px solid var(--border);margin:22px 0;}
+.closing{margin-top:28px;padding-top:22px;border-top:1px solid var(--border);text-align:center;}
+.closing p{font-style:italic;font-size:17px;color:var(--text);margin-bottom:8px;}
+.closing .sign{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <span class="topnav-title">24HoH 2026</span>
+  <a class="topnav-link" href="wods.html">Run Sheet &rarr;</a>
+</div>
+
+<div class="hero">
+  <div class="hero-eyebrow">24 Hours of Heroes &middot; CFNB 2026</div>
+  <div class="hero-title">SURVIVAL<br><span>GUIDE</span></div>
+  <div class="hero-sub">Read it. Apply it. Thank us later.</div>
+  <div class="hero-tag">Team Classified</div>
+</div>
+
+<nav class="tabs-wrap">
+  <button class="tab-btn active" onclick="showTab('mentality',this)">Mentality</button>
+  <button class="tab-btn" onclick="showTab('strategy',this)">Strategy</button>
+  <button class="tab-btn" onclick="showTab('recovery',this)">Recovery</button>
+  <button class="tab-btn" onclick="showTab('nutrition',this)">Nutrition</button>
+  <button class="tab-btn" onclick="showTab('napping',this)">Napping</button>
+  <button class="tab-btn" onclick="showTab('body',this)">Body</button>
+</nav>
+
+<div id="mentality" class="section active">
+  <div class="sec-label">Mentality &amp; Approach</div>
+  <div class="lead">This event is not won in the first six hours. It is survived in the last six.</div>
+  <p>Pace yourself from WOD one. Your job is not to post a hero time, your job is to still be standing when your next slot comes around at 0200.</p>
+  <p>Break it into blocks. Morning, afternoon, evening, overnight. One block at a time. The moment you start doing the maths on how many hours are left you have already lost the mental game.</p>
+  <hr>
+  <p>Expect a wall somewhere between midnight and 0300. It is not a sign that something is wrong. It is a sign that you are a human being doing something genuinely questionable.</p>
+  <p>When you hit it, and you will, <span class="highlight">remember why this event exists.</span> Every WOD carries the name of a real person. A soldier, a police officer, a firefighter who did not get to choose when things got hard. We do. That is the privilege and that is the point. Eat something, dig in, and keep moving.</p>
+  <div class="warn"><p>Also remind yourself that Rinus signed up for 209 vested burpees. So whatever you are feeling right now, your problems are not that serious.</p></div>
+  <div class="closing">
+    <p>The names on those WODs did not tap out.<br>Neither do we.</p>
+    <div class="sign">Team Classified &middot; April 18-19, 2026</div>
+  </div>
+</div>
+
+<div id="strategy" class="section">
+  <div class="sec-label">Workout Strategy</div>
+  <div class="lead">Start every WOD at 80 percent. The other 20 is there if you need it later.</div>
+  <div class="rule"><div class="rl">General rule</div><p>Break sets before you have to, not when you are forced to. Planned rest is faster than failing a rep and staring at the bar.</p></div>
+  <div class="rule"><div class="rl">Running WODs</div><p>The run is your recovery between barbell and gymnastics work. Use it. Do not sprint out of the gate and crawl back in.</p></div>
+  <div class="rule"><div class="rl">High rep bodyweight (Aplin, Akker)</div><p>Pace brutally from the first set. Failing at rep 200 because you went too hard at rep one is a very specific kind of suffering that is entirely avoidable.</p></div>
+  <div class="rule"><div class="rl">Overnight WODs</div><p>Your coordination drops more than you think after midnight. Go lighter than your ego wants and move well. The barbell does not care that it is 0100.</p></div>
+  <div class="rule"><div class="rl">Partner and team WODs</div><p>Communicate constantly. Use the built-in rest periods. A well managed partner WOD will leave you fresher than a solo WOD where you redlined.</p></div>
+  <div class="rule"><div class="rl">Heavy barbell WODs (Walshy 142, Palmer)</div><p>Warm up more than you think you need to. Cold muscles and heavy barbells at night are not friends. Scale the load early if movement quality drops.</p></div>
+</div>
+
+<div id="recovery" class="section">
+  <div class="sec-label">Recovery, Stretching &amp; Mobility</div>
+  <div class="lead">Do not sit down and get cold after a WOD. The version of you at 0400 will feel the difference.</div>
+  <h3>First 10-15 minutes after every WOD</h3>
+  <div class="rule"><p>Walk it off. Easy bike or row. Get the heart rate down gradually. Get your breathing under control before you eat or drink anything substantial.</p></div>
+  <h3>Short gaps (1-2 hours)</h3>
+  <div class="rule"><p>Light mobility on whatever you just loaded. Do not stretch cold, move first. Keep a layer on. A cold muscle between WODs is asking for a strain.</p></div>
+  <h3>Longer gaps (4+ hours)</h3>
+  <div class="rule"><p>Twenty minutes of deliberate mobility work pays dividends six hours later. Elevate your legs. A cool shower on the legs reduces localised inflammation. Not comfortable, very effective.</p></div>
+  <hr>
+  <h3>Key areas to hit across the event</h3>
+  <div class="rule"><div class="rl">Hips and hip flexors</div><p>Couch stretch, pigeon, 90/90. After any squat or running heavy WOD.</p></div>
+  <div class="rule"><div class="rl">Thoracic spine</div><p>Foam roller or lacrosse ball on the upper back. Keeps pressing and overhead positions open. Two minutes consistently beats one long session you never do.</p></div>
+  <div class="rule"><div class="rl">Ankles and calves</div><p>Roll the calves out, ankle circles. Three minutes. Prevents the wooden leg feeling at 0400.</p></div>
+  <div class="rule"><div class="rl">Shoulders and lats</div><p>Doorframe stretches, lat hangs, cross body stretch. After any pull or press heavy WOD.</p></div>
+  <div class="rule"><div class="rl">Hamstrings and lower back</div><p>Forward fold, supine hamstring stretch, child's pose. Do not neglect these overnight or getting out of the car the next morning will be an experience.</p></div>
+</div>
+
+<div id="nutrition" class="section">
+  <div class="sec-label">Nutrition</div>
+  <div class="lead">Your body cannot run on willpower alone. Unfortunately.</div>
+  <h3>Pre WOD</h3>
+  <div class="rule"><p>Something small and carb focused 60 to 90 minutes out. Banana, rice cakes with honey, oats, toast with peanut butter. Not a full meal. Avoid high fat and high fibre -- they slow digestion and make the WOD uncomfortable.</p></div>
+  <div class="rule"><div class="rl">Overnight WODs</div><p>You will not feel like eating. Eat anyway. A small carb snack 45 minutes out is better than going in empty.</p></div>
+  <div class="rule"><div class="rl">Caffeine</div><p>Save your biggest hit for the 0100 to 0300 window. Using it all day means it stops working when things get hard. Small coffee 30 to 45 minutes pre WOD is fine. Do not live on it.</p></div>
+  <h3>Intra WOD</h3>
+  <div class="rule"><p>Water for anything under 20 minutes. Electrolyte drink for anything near the 40 minute cap. Sip it, do not skull it. Add electrolytes to at least every second drink across the whole day -- plain water alone will not replace what you lose in sweat over 24 hours.</p></div>
+  <h3>Post WOD</h3>
+  <div class="rule"><p>Protein and carbs within 30 minutes. A shake and a banana works. 20 to 30g protein, similar amount of carbs. Overnight, liquid nutrition is your friend. A protein drink is easier to get down at 0300 than a chicken breast, and considerably less depressing.</p></div>
+  <h3>General strategy</h3>
+  <div class="rule"><p>Real food during the day while digestion works well. Simpler, more digestible food from 2000 onwards. Keep snacks accessible at all times. Something in the hand between WODs is better than a full meal you have to think about.</p></div>
+  <div class="warn"><p>Do not wait until you are thirsty. By the time you are thirsty you are already behind.</p></div>
+</div>
+
+<div id="napping" class="section">
+  <div class="sec-label">Napping &amp; Sleep</div>
+  <div class="lead">A nap is not a luxury. It is a performance tool. Plan it like one.</div>
+  <p>After 18 hours awake your performance drops significantly. After 24 hours you are effectively operating at the same level as someone who is legally drunk. This is not a metaphor. Plan your sleep accordingly.</p>
+  <div class="nap-grid">
+    <div class="nap-card"><div class="nt">10-20 min</div><p>Power nap. Best for short gaps. Refreshes without grogginess. Set two alarms. Always two.</p></div>
+    <div class="nap-card"><div class="nt">90 min</div><p>Full sleep cycle. Use for gaps of 3 hours or more. Wake up feeling like a different person.</p></div>
+  </div>
+  <div class="warn"><p>Avoid 30 to 60 minute naps. You will wake up mid cycle, groggy, confused, and furious at everyone. This is not what the team needs at 0200.</p></div>
+  <hr>
+  <h3>General napping rules</h3>
+  <div class="rule"><div class="rl">Before you sleep</div><p>Identify your rest gaps in advance and plan which nap length fits. Do not leave it to chance at hour sixteen.</p></div>
+  <div class="rule"><div class="rl">Alarms</div><p>Set two alarms. Always two. Tell someone when you are sleeping so they can wake you if needed.</p></div>
+  <div class="rule"><div class="rl">Environment</div><p>Sleep somewhere quiet and dark if possible. Pack an eye mask and earplugs -- they make a real difference in a busy gym environment.</p></div>
+  <div class="rule"><div class="rl">Timing</div><p>Do not nap within 60 minutes of your next WOD. The grogginess will not clear in time and you will perform worse than if you had stayed awake.</p></div>
+  <div class="rule"><div class="rl">Waking up</div><p>Splash cold water on your face immediately. Get up and walk around. Eat something small. Give yourself 10 minutes before you assess how you feel.</p></div>
+  <div class="rule"><div class="rl">Longer gaps (6+ hours)</div><p>A 90 minute sleep cycle is your target. Use the time well -- eat first, then sleep, then mobility before your next WOD. Do not waste a long gap lying awake on your phone.</p></div>
+</div>
+
+<div id="body" class="section">
+  <div class="sec-label">Body Awareness &amp; Managing Load</div>
+  <div class="lead">Discomfort is expected. You signed up for discomfort. Damage is different.</div>
+  <p>Sharp, localised, sudden pain that does not ease off with movement is not discomfort. If you feel that, stop and tell someone. Pushing through actual damage in hour eight means you may not make it to hour sixteen.</p>
+  <div class="rule"><div class="rl">Watch for</div><p>Joint pain that worsens across WODs rather than improving with warm up. Grip and forearm failure on pull work -- if your grip is gone, scale the movement. Lower back tightening under deadlift and squat volume -- manage it with mobility, and reduce load if it goes from tight to painful.</p></div>
+  <div class="rule"><div class="rl">Dizziness or nausea</div><p>Almost always nutrition or hydration. Sit down, eat something, drink something. Wait five minutes before continuing. Do not try to walk it off mid WOD before you become a team problem.</p></div>
+  <hr>
+  <div class="warn"><p>Somewhere around 0200 most people will have a moment where they question every life decision that led them here. When that moment comes, look at the name on the whiteboard. That person did not get to tap out. Neither do we. Eat something, talk to a teammate, and finish what you started.</p></div>
+  <div class="closing">
+    <p>The team that finishes well manages the event.<br>Be smart, look after each other,<br>and honour the names on those WODs.</p>
+    <div class="sign">See you on the floor &#128170;</div>
+  </div>
+</div>
+
+<script>
+function showTab(id, btn) {
+  var sections = document.getElementsByClassName('section');
+  var btns = document.getElementsByClassName('tab-btn');
+  for (var i = 0; i < sections.length; i++) {
+    sections[i].className = 'section';
+    btns[i].className = 'tab-btn';
+  }
+  document.getElementById(id).className = 'section active';
+  btn.className = 'tab-btn active';
+  if (btn.scrollIntoView) btn.scrollIntoView({block:'nearest',inline:'center'});
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
